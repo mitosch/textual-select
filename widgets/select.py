@@ -143,7 +143,6 @@ class SelectList(Widget):
 
 class Select(Widget, can_focus=True):
     """A select widget with a drop-down."""
-    # TODO: check if "text" can be removed (switched to placeholder)
     # TODO: reset SelectListSearchInput when closing (and re-opening)
     # TODO: validate given items (list of dicts not like value, text)
     # OPTIMIZE: implement pg-down/up, end/home
