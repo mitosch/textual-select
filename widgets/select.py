@@ -6,11 +6,7 @@ from textual.widgets import Label, ListView, ListItem, Input
 from textual.reactive import reactive
 from textual.message import Message
 
-from textual._segment_tools import line_crop
 from rich.highlighter import Highlighter
-from rich.console import RenderableType, Console, ConsoleOptions, RenderResult
-from rich.segment import Segment
-from rich.text import Text
 
 # from textual import log
 
@@ -145,35 +141,9 @@ class SelectList(Widget):
             event.prevent_default()
 
 
-class _SelectRenderable:
-    # TODO: make the chevron right aligned and do not crop it
-    # OPTIMIZE: check if this code is really needed or the renderable can be skipped
-    def __init__(self, select: Select) -> None:
-        self.select = select
-
-    def __rich_console__(
-            self,
-            console: "Console",
-            options: "ConsoleOptions"
-    ) -> "RenderResult":
-        select = self.select
-        # result = select._value + " ⌄"
-        result = select._text + " \u25bc"  # <= triangle filled down
-        width = select.content_size.width
-        segments = list(result.render(console))
-        line_length = Segment.get_line_length(segments)
-
-        line = line_crop(
-            list(segments),
-            select.view_position,
-            select.view_position + width,
-            line_length
-        )
-        yield from line
-
-
 class Select(Widget, can_focus=True):
     """A select widget with a drop-down."""
+    # TODO: check if "text" can be removed (switched to placeholder)
     # TODO: reset SelectListSearchInput when closing (and re-opening)
     # TODO: validate given items (list of dicts not like value, text)
     # OPTIMIZE: implement pg-down/up, end/home
@@ -202,15 +172,13 @@ class Select(Widget, can_focus=True):
     """
 
     value = reactive("", layout=True, init=False)
-    view_position = reactive(0)
 
     def __init__(
             self,
             items: list,
             list_mount: str,
-            text: str | None = "",
             search: bool | None = False,
-            placeholder: str = "",  # not implemented yet
+            placeholder: str = "",
             highlighter: Highlighter | None = None,
             name: str | None = None,
             id: str | None = None,
@@ -218,23 +186,33 @@ class Select(Widget, can_focus=True):
     ) -> None:
         self.select_classes = classes
         super().__init__(name=name, id=id, classes=classes)
-        # if text is not None:
-        #     self.text = text
-        self.text = text
+        self.placeholder = placeholder
         self.items = items
         self.list_mount = list_mount
         self.highlighter = highlighter
         self.search = search
 
+        # SelectList widget
         self.select_list = None
 
-    def render(self) -> RenderableType:
-        return _SelectRenderable(self)
+        # The selected text
+        self.text = ""
 
-    @property
-    def _text(self) -> Text:
-        """Value of the current selection as text."""
-        text = Text(self.text, no_wrap=True, overflow="ignore")
+    def render(self) -> str:
+        chevron = "\u25bc"
+        width = self.content_size.width
+        text_space = width - 2
+
+        if not self.text:
+            text = self.placeholder
+        else:
+            text = self.text
+
+        if len(text) > text_space:
+            text = text[0:text_space]
+
+        text = f"{text:{text_space}} {chevron}"
+
         return text
 
     def on_mount(self):

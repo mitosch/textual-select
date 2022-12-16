@@ -34,14 +34,14 @@ class DropdownApp(App):
         yield Vertical(
             Label("Car type:"),
             Select(
-                text="please select",
+                placeholder="please select",
                 items=dropdown_data,
                 list_mount="#main_container"
             ),
 
             Label("Car type (searchable):"),
             Select(
-                text="please select",
+                placeholder="please select",
                 items=dropdown_data,
                 search=True,
                 list_mount="#main_container"
