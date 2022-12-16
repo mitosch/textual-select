@@ -20,7 +20,7 @@ dropdown_data = [
 ]
 
 Select(
-    text="please select",
+    placeholder="please select",
     items=dropdown_data,
     list_mount="#main_container"
 )
