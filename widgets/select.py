@@ -273,6 +273,9 @@ class Select(Widget, can_focus=True):
             else:
                 self.select_list.query("ListView").first().focus()
 
+    def on_blur(self) -> None:
+        pass
+
     async def watch_value(self, value: str) -> None:
         await self.emit(self.Changed(self, value))
 
