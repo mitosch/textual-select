@@ -177,6 +177,7 @@ class Select(Widget, can_focus=True):
             items: list,
             list_mount: str,
             search: bool | None = False,
+            value: str | None = None,
             placeholder: str = "",
             highlighter: Highlighter | None = None,
             name: str | None = None,
@@ -185,6 +186,8 @@ class Select(Widget, can_focus=True):
     ) -> None:
         self.select_classes = classes
         super().__init__(name=name, id=id, classes=classes)
+        if value is not None:
+            self.value = value
         self.placeholder = placeholder
         self.items = items
         self.list_mount = list_mount
@@ -196,6 +199,13 @@ class Select(Widget, can_focus=True):
 
         # The selected text
         self.text = ""
+
+        # there is a value, find the text to display
+        if self.value:
+            for item in self.items:
+                if str(item["value"]) == str(self.value):
+                    self.text = item["text"]
+                    break
 
     def render(self) -> str:
         chevron = "\u25bc"
