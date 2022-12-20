@@ -287,6 +287,10 @@ class Select(Widget, can_focus=True):
         pass
 
     async def watch_value(self, value: str) -> None:
+        if value is None:
+            self.text = ""
+            self.select_list.list_view.index = 0
+            self.refresh(layout=True)
         await self.emit(self.Changed(self, value))
 
     class Changed(Message, bubble=True):
