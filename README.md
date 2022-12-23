@@ -1,6 +1,6 @@
 # Textual: Select
 
-A simple select widget (aka dropdown) for [textual](https://github.com/Textualize/textual).
+A simple select widget (aka dropdown) for [textual](https://github.com/Textualize/textual) with an optional search field.
 
 ## Usage
 
@@ -33,3 +33,20 @@ pip install textual-select
 ```
 
 Requires textual 0.6.0 or later.
+
+## Limitations
+
+This textual widget is in early stage and has some limitations:
+
+* It needs a specific mount point (`list_mount`) where the dropdown list
+  shall appear. This is needed because the container widget with the select
+  itself could be too small. Maybe in future versions this will no longer
+  needed.
+* Mouse support is currently not implemented and will follow.
+* Once an entry is selected, there is no possibility to "un-select" an entry.
+
+## Similar Widgets
+
+* If you are looking for an autocomplete, please refer to
+  [textual-autocomplete](https://github.com/darrenburns/textual-autocomplete)
+  by Darren Burns.
