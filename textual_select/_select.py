@@ -65,10 +65,6 @@ class SelectList(Widget):
       layer: dialog;
       background: $boost;
       border: tall $accent;
-      /*
-      height: 5;
-      min-height: 5;
-      */
       display: none;
     }
     SelectList.--search ListView {
@@ -79,7 +75,6 @@ class SelectList(Widget):
       padding: 0 2;
     }
     SelectList ListView:focus > ListItem.--highlight {
-      /*background: $accent 20%;*/
     }
     SelectList SelectListSearchInput {
       border: none;
@@ -143,9 +138,7 @@ class SelectList(Widget):
 
 class Select(Widget, can_focus=True):
     """A select widget with a drop-down."""
-    # TODO: reset SelectListSearchInput when closing (and re-opening)
     # TODO: validate given items (list of dicts not like value, text)
-    # OPTIMIZE: implement pg-down/up, end/home
     # OPTIMIZE: when empty, show dimmed text (e.g. "no entries")
     # OPTIMIZE: get rid of self.app.query_one(self.list_mount)
     # OPTIMIZE: option: individual height
