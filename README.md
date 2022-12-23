@@ -2,6 +2,13 @@
 
 A simple select widget (aka dropdown) for [textual](https://github.com/Textualize/textual) with an optional search field.
 
+![select_focus](https://user-images.githubusercontent.com/922559/209305346-6b8971b1-7a3a-4424-bdf8-c439b9d74e28.png)
+
+![select_open](https://user-images.githubusercontent.com/922559/209305349-84f39432-b1e4-405e-8854-a8d7a33230ae.png)
+
+![select_search](https://user-images.githubusercontent.com/922559/209305352-9ad2e7c1-9dc6-435f-b1bd-8dba5f5b2642.png)
+
+
 ## Usage
 
 ```python
