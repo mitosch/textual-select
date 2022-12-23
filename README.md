@@ -49,8 +49,10 @@ This textual widget is in early stage and has some limitations:
   shall appear. This is needed because the container widget with the select
   itself could be too small. Maybe in future versions this will no longer
   needed.
-* Mouse support is currently not implemented and will follow.
-* Once an entry is selected, there is no possibility to "un-select" an entry.
+* It can only open below, not above: Make sure to reserve space below the
+  dropdown.
+* The dropdown list has a fixed height of 5 entries. This will be configurable
+  in future versions.
 
 ## Similar Widgets
 

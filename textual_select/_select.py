@@ -36,11 +36,7 @@ class SelectListSearchInput(Input):
         classes: str | None = None,
     ) -> None:
         super().__init__(
-            value=value,
-            placeholder=placeholder,
-            name=name,
-            id=id,
-            classes=classes
+            value=value, placeholder=placeholder, name=name, id=id, classes=classes
         )
         self.select_list = select_list
 
@@ -57,6 +53,35 @@ class SelectListSearchInput(Input):
 
     def action_scroll_up(self) -> None:
         self.select_list.list_view.action_cursor_up()
+
+    def on_blur(self) -> None:
+        self.select_list.display = False
+        self.value = ""
+
+
+class SelectListView(ListView):
+    """The ListView inside the SelectList which closes the list on blur."""
+
+    def __init__(
+        self,
+        *children: ListItem,
+        select_list: SelectList,
+        initial_index: int | None = 0,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
+    ) -> None:
+        super().__init__(
+            *children, initial_index=initial_index, name=name, id=id, classes=classes
+        )
+        self.select_list = select_list
+
+    def on_blur(self) -> None:
+        self.select_list.display = False
+
+    def on_click(self, event: events.MouseEvent) -> None:
+        self.select_list.select_highlighted_item()
+        self.select_list.display = False
 
 
 class SelectList(Widget):
@@ -111,7 +136,7 @@ class SelectList(Widget):
         list_items = []
         for item in self.items:
             list_items.append(ListItem(Label(item["text"])))
-        self.list_view = ListView(*list_items)
+        self.list_view = SelectListView(*list_items, select_list=self)
 
         if self.search:
             widgets.append(SelectListSearchInput(select_list=self))
@@ -127,11 +152,7 @@ class SelectList(Widget):
         #   * emitted on single click (can be ok, but would close immediately)
 
         if event.key == "enter":
-            if self.list_view.index is not None:
-                # index can be None, if a search results in no entries
-                # => do not change select value in this case
-                self.select.text = self.items_filtered[self.list_view.index]["text"]
-                self.select.value = self.items_filtered[self.list_view.index]["value"]
+            self.select_highlighted_item()
             self.display = False
             self.select.focus()
 
@@ -140,19 +161,23 @@ class SelectList(Widget):
             # looks like Gtk is handling it the same.
             event.prevent_default()
 
+    def select_highlighted_item(self) -> None:
+        if self.list_view.index is not None:
+            # index can be None, if a search results in no entries
+            # => do not change select value in this case
+            self.select.text = self.items_filtered[self.list_view.index]["text"]
+            self.select.value = self.items_filtered[self.list_view.index]["value"]
+
 
 class Select(Widget, can_focus=True):
     """A select widget with a drop-down."""
+
     # TODO: validate given items (list of dicts not like value, text)
     # OPTIMIZE: when empty, show dimmed text (e.g. "no entries")
     # OPTIMIZE: get rid of self.app.query_one(self.list_mount)
     # OPTIMIZE: option: individual height
     # OPTIMIZE: mini-bug: resize not nice when opened (edge case...)
     # OPTIMIZE: auto-select by key-press without search? (hard)
-    # TODO: mouse: select highlighted ListItem (aka double-click)
-    # TODO: mouse: close on blur
-    # TODO: mouse: hover whole line (not only word of ListItem)
-    # TODO: mouse: scrolling (baah... so many mouse-things)
 
     DEFAULT_CSS = """
     Select {
@@ -171,16 +196,16 @@ class Select(Widget, can_focus=True):
     value = reactive("", layout=True, init=False)
 
     def __init__(
-            self,
-            items: list,
-            list_mount: str,
-            search: bool | None = False,
-            value: str | None = None,
-            placeholder: str = "",
-            highlighter: Highlighter | None = None,
-            name: str | None = None,
-            id: str | None = None,
-            classes: str | None = None
+        self,
+        items: list,
+        list_mount: str,
+        search: bool | None = False,
+        value: str | None = None,
+        placeholder: str = "",
+        highlighter: Highlighter | None = None,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
     ) -> None:
         self.select_classes = classes
         super().__init__(name=name, id=id, classes=classes)
@@ -242,44 +267,51 @@ class Select(Widget, can_focus=True):
                 select=self,
                 items=self.items,
                 search=self.search,
-                classes=self.select_classes
+                classes=self.select_classes,
             )
             self.app.query_one(self.list_mount).mount(self.select_list)
 
     def on_key(self, event: events.Key) -> None:
         if event.key == "enter":
-            self.select_list.display = True
-            self.select_list.styles.width = self.outer_size.width
+            self._show_select_list()
 
-            # OPTIMIZE: this could be done more configurable
-            default_height = 5
-            if self.search:
-                default_height = 8
-            if self.select_list.styles.height is None:
-                self.select_list.styles.height = default_height
-            if self.select_list.styles.min_height is None:
-                self.select_list.styles.min_height = default_height
-            if len(self.items) < 5:
-                height = max(1, len(self.items))
-                self.select_list.styles.height = height
-                self.select_list.styles.min_height = height
+    def on_click(self, event: events.MouseEvent) -> None:
+        self._show_select_list()
 
-            # calculate the offset by using the mount-point's offset:
-            # setting the offset directly from self.region (Select widget)
-            # has the header *not* included, therefore we need to subtract
-            # the mount-point's offset.
-            #
-            # further explanation (or assumption):
-            # it looks like the mount point has a relative offset, e.g. below
-            # the header. setting the offset of the list directly seams to be
-            # absolute.
-            self.select_list.offset = self.region.offset - \
-                self.app.query_one(self.list_mount).content_region.offset
+    def _show_select_list(self) -> None:
+        mnt_widget = self.app.query_one(self.list_mount)
+        self.select_list.display = True
+        self.select_list.styles.width = self.outer_size.width
 
-            if self.search:
-                self.select_list.query_one("SelectListSearchInput").focus()
-            else:
-                self.select_list.query("ListView").first().focus()
+        # OPTIMIZE: this could be done more configurable
+        default_height = 5
+        if self.search:
+            default_height = 8
+        if self.select_list.styles.height is None:
+            self.select_list.styles.height = default_height
+        if self.select_list.styles.min_height is None:
+            self.select_list.styles.min_height = default_height
+        if len(self.items) < 5:
+            height = max(1, len(self.items))
+            self.select_list.styles.height = height
+            self.select_list.styles.min_height = height
+
+        # calculate the offset by using the mount-point's offset:
+        # setting the offset directly from self.region (Select widget)
+        # has the header *not* included, therefore we need to subtract
+        # the mount-point's offset.
+        #
+        # further explanation (or assumption):
+        # it looks like the mount point has a relative offset, e.g. below
+        # the header. setting the offset of the list directly seams to be
+        # absolute.
+
+        self.select_list.offset = self.region.offset - mnt_widget.content_region.offset
+
+        if self.search:
+            self.select_list.query_one("SelectListSearchInput").focus()
+        else:
+            self.select_list.query("ListView").first().focus()
 
     def on_blur(self) -> None:
         pass
