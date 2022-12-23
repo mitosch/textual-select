@@ -1,12 +1,14 @@
 # Textual: Select
 
-A simple select widget (aka drop-down) for [textual](https://github.com/Textualize/textual).
+A simple select widget (aka dropdown) for [textual](https://github.com/Textualize/textual).
 
 Requires textual 0.6.0 or later.
 
 ## Usage
 
 ```python
+from textual_select import Select
+
 dropdown_data = [
     {"value": 0, "text": "Pick-Up"},
     {"value": 1, "text": "SUV"},
@@ -26,6 +28,8 @@ Select(
 )
 ```
 
-See [dropdown_app.py](dropdown_app.py) for a working example: `python dropdown_app.py`
+## Installation
 
-Note: Maybe this will be migrated to a plugin later.
+```bash
+pip install textual-select
+```
