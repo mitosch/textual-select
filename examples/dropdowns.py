@@ -2,7 +2,7 @@ from textual.app import App, ComposeResult
 from textual.containers import Vertical
 from textual.widgets import Header, Footer, Label, Input
 
-from widgets import Select
+from textual_select import Select
 
 
 class DropdownApp(App):
@@ -15,6 +15,10 @@ class DropdownApp(App):
         margin: 3 1 1 1;
     }
     """
+
+    BINDINGS = [
+        ("f10", "app.quit", "Exit")
+    ]
 
     def compose(self) -> ComposeResult:
         dropdown_data = [
