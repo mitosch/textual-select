@@ -2,8 +2,6 @@
 
 A simple select widget (aka dropdown) for [textual](https://github.com/Textualize/textual).
 
-Requires textual 0.6.0 or later.
-
 ## Usage
 
 ```python
@@ -33,3 +31,5 @@ Select(
 ```bash
 pip install textual-select
 ```
+
+Requires textual 0.6.0 or later.
