@@ -60,6 +60,8 @@ class SelectListSearchInput(Input):
 
 
 class SelectList(Widget):
+    """The dropdown list which is opened at the input."""
+
     DEFAULT_CSS = """
     SelectList {
       layer: dialog;
@@ -73,6 +75,9 @@ class SelectList(Widget):
     SelectList ListItem {
       background: transparent;
       padding: 0 2;
+    }
+    SelectList ListItem:hover {
+      background: $boost;
     }
     SelectList ListView:focus > ListItem.--highlight {
     }
