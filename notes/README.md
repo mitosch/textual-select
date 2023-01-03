@@ -1,6 +1,12 @@
 # Development Notes
 
-Testing:
+## Todos
+
+* [ ] Optimize error message, when `picker_mount` selector can't find element
+* [ ] Fulfill 100% test coverage
+
+## Testing
+
 ```bash
 # run tests
 poetry run pytest
