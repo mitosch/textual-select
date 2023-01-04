@@ -235,6 +235,9 @@ class Select(Widget, can_focus=True):
         width = self.content_size.width
         text_space = width - 2
 
+        if text_space < 0:
+            text_space = 0
+
         if not self.text:
             text = self.placeholder
         else:
