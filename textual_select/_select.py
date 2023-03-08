@@ -324,7 +324,7 @@ class Select(Widget, can_focus=True):
             self.text = ""
             self.select_list.list_view.index = 0
             self.refresh(layout=True)
-        await self.emit(self.Changed(self, value))
+        await self.post_message(self.Changed(self, value))
 
     class Changed(Message, bubble=True):
         """Value was changed."""
