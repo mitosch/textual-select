@@ -39,7 +39,7 @@ Select(
 pip install textual-select
 ```
 
-Requires textual 0.6.0 or later.
+Requires textual 0.11.0 or later.
 
 ## Limitations
 
