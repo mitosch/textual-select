@@ -79,7 +79,9 @@ class SelectListView(ListView):
     def on_blur(self) -> None:
         self.select_list.display = False
 
-    def on_click(self, event: events.MouseEvent) -> None:
+    def on_list_item__child_clicked(self, event: ListItem._ChildClicked) -> None:
+        super().on_list_item__child_clicked(event)
+
         self.select_list.select_highlighted_item()
         self.select_list.display = False
 
