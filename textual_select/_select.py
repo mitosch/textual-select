@@ -321,17 +321,17 @@ class Select(Widget, can_focus=True):
     def on_blur(self) -> None:
         pass
 
-    async def watch_value(self, value: str) -> None:
+    def watch_value(self, value: str) -> None:
         if value is None:
             self.text = ""
             self.select_list.list_view.index = 0
             self.refresh(layout=True)
-        await self.post_message(self.Changed(self, value))
+        self.post_message(self.Changed(self, value))
 
     class Changed(Message, bubble=True):
         """Value was changed."""
 
         def __init__(self, sender: Select, value: str) -> None:
-            super().__init__(sender)
+            super().__init__()
             self.value = value
             self.select = sender
