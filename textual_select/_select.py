@@ -326,12 +326,11 @@ class Select(Widget, can_focus=True):
             self.text = ""
             self.select_list.list_view.index = 0
             self.refresh(layout=True)
-        self.post_message(self.Changed(self, value))
+        self.post_message(self.Changed(value))
 
     class Changed(Message, bubble=True):
         """Value was changed."""
 
-        def __init__(self, sender: Select, value: str) -> None:
+        def __init__(self, value: str) -> None:
             super().__init__()
             self.value = value
-            self.select = sender
