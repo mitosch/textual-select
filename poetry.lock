@@ -1128,14 +1128,14 @@ files = [
 
 [[package]]
 name = "textual"
-version = "0.13.0"
+version = "0.16.0"
 description = "Modern Text User Interface framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "textual-0.13.0-py3-none-any.whl", hash = "sha256:1c7fd1f08b8080d85119bdb72943086444256f7ea3275609b21d654f5643b05d"},
-    {file = "textual-0.13.0.tar.gz", hash = "sha256:f8e82432a34b1a239679a54b052437cdcec353ecccecf616f972fae3dd081b25"},
+    {file = "textual-0.16.0-py3-none-any.whl", hash = "sha256:27955f8c5dc0244892d372aad656287abb08b7457dc8ad60df02e367472b0fb6"},
+    {file = "textual-0.16.0.tar.gz", hash = "sha256:9db4cf4c3fa487338d351f2c40280cf69456d513b28e5d8fe3f044bd1c38ca98"},
 ]
 
 [package.dependencies]
@@ -1146,7 +1146,7 @@ markdown-it-py = {version = ">=2.1.0,<3.0.0", extras = ["linkify", "plugins"]}
 mkdocs-exclude = ">=1.0.2,<2.0.0"
 msgpack = {version = ">=1.0.3", optional = true, markers = "extra == \"dev\""}
 rich = ">12.6.0"
-typing-extensions = ">=4.0.0,<5.0.0"
+typing-extensions = ">=4.4.0,<5.0.0"
 
 [package.extras]
 dev = ["aiohttp (>=3.8.1)", "click (>=8.1.2)", "msgpack (>=1.0.3)"]
@@ -1338,4 +1338,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "3861b5dd0354b6e837aae79ebee580c46ca0316274615a80d0c7a8646b5a6b34"
+content-hash = "1d82d4512b41aa0499930979cfcdc253744492073d91b1d98e4a01e93adde282"
