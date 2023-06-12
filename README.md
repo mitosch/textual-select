@@ -1,5 +1,9 @@
 # Textual: Select
 
+IMPORTANT: Since version 0.24.0 Textual implemented a native dropdown. I strongly
+recommend to use the native version. This repository will slowly die. More information
+at the [Blog Post about Select control](https://textual.textualize.io/blog/2023/05/08/textual-0240-adds-a-select-control/).
+
 A simple select widget (aka dropdown) for [textual](https://github.com/Textualize/textual) with an optional search field.
 
 ![select_focus](https://user-images.githubusercontent.com/922559/209305346-6b8971b1-7a3a-4424-bdf8-c439b9d74e28.png)

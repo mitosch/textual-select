@@ -80,7 +80,7 @@ class SelectListView(ListView):
         self.select_list.display = False
 
     def on_list_item__child_clicked(self, event: ListItem._ChildClicked) -> None:
-        super().on_list_item__child_clicked(event)
+        super()._on_list_item__child_clicked(event)
 
         self.select_list.select_highlighted_item()
         self.select_list.display = False
