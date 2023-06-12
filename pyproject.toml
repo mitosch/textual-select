@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "textual-select"
-version = "0.3.3"
+version = "0.3.4"
 description = "A select widget (aka dropdown) for Textual."
 authors = ["Mischa Schindowski <mschindowski@gmail.com>"]
 readme = "README.md"
